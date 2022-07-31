@@ -1,6 +1,10 @@
 from Pizza import app, db
 from Pizza.models import pizza, customer
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, g
+
+
+
+
 
 @app.route('/', methods=["GET","Post"])
 def home():
@@ -11,10 +15,9 @@ def home():
 def user():  #this should work as both a login and register
     if request.method == "POST":
         user = request.form.get('username')
-        print("first print "+user)
         on = False #when the user is tagging the name, we make the user inactive.
         name = customer.query.filter_by(name=user).first()
-        print ("first print")
+        
         if name:
             print (name.active)
             if name.active == True:
@@ -38,8 +41,8 @@ def user():  #this should work as both a login and register
             new_customer.name = user
             new_customer.active = on
 
-            session["Current_Customer"] = new_customer
-
+            session["Current_Customer"] = user
+            print(user)
             db.session.add(new_customer)
             print (new_customer)
             db.session.commit()
@@ -66,7 +69,6 @@ def cart():
     if request.method == "POST":
         print ("cart")
 
-        user = session["Current_Customer"]
         id = request.form.get("pizzaid")
         print (id)
 
@@ -97,16 +99,19 @@ def fail():
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    print (customer)
-    update = customer.query.filter_by(name=user).first()
 
-    update.name = customer
+    Current_Customer = session["Current_Customer"] 
+    print (Current_Customer)
+    print ("current customer")
+    
+    update = customer.query.filter_by(name=Current_Customer).first()
+
     update.active = False
     update.pizza_id = None
 
-
-    print (update_customer)
     db.session.commit()
+
+    session.pop('Current_Customer', None)
 
     results = customer.query.filter_by(name=user).first()    
     print(results)
