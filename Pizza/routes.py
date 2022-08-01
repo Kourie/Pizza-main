@@ -1,8 +1,6 @@
 from Pizza import app, db
-from Pizza.models import pizza, customer
+from Pizza.models import pizza, customer, c_order
 from flask import Flask, render_template, request, flash, session, redirect, g
-
-
 
 
 
@@ -68,15 +66,21 @@ def menu():
 def cart():
     if request.method == "POST":
         print ("cart")
+# put in the user id instead of username.
+        user = session["Current_Customer"]
 
         id = request.form.get("pizzaid")
         print (id)
 
-        pizz = customer()
+        pizz = c_order()
         pizz.pizza_id = id
-        pizz.name = user.name
-        db.session.commit()
-        print(hi)
+        pizz.customer_id = user
+        db.session.add(pizz)
+
+        results = pizza.query.all()
+        print (results)
+        return render_template("menu.html", results = results)
+
 
 
 
@@ -103,7 +107,7 @@ def logout():
     Current_Customer = session["Current_Customer"] 
     print (Current_Customer)
     print ("current customer")
-    
+
     update = customer.query.filter_by(name=Current_Customer).first()
 
     update.active = False
