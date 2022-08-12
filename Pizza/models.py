@@ -5,7 +5,6 @@ class customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
     active = db.Column(db.Boolean, nullable=True)
-    pizza_id = db.Column(db.Integer, db.ForeignKey('pizza.id'), nullable=True)
     def __repr__(self):
         return self.name
 
@@ -15,6 +14,8 @@ class pizza(db.Model):
     price = db.Column(db.Integer)
     
 class c_order(db.Model):
-    customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"))
     pizza_id = db.Column(db.Integer, db.ForeignKey("pizza.id"))
+    pizza_price = db.Column(db.Integer, db.ForeignKey("pizza.price"))
 

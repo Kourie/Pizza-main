@@ -13,7 +13,7 @@ def home():
 def user():  #this should work as both a login and register
     if request.method == "POST":
         user = request.form.get('username')
-        on = False #when the user is tagging the name, we make the user inactive.
+        on = True #when the user is tagging the name, we make the user inactive.
         name = customer.query.filter_by(name=user).first()
         
         if name:
@@ -24,8 +24,10 @@ def user():  #this should work as both a login and register
                 return render_template("home.html")
             else:
                 flash ("username confirmed, coining name. logged in correctly, ")
+                session["Current_Customer"] = user
                 ustomer = request.form['username']
                 update = customer.query.filter_by(name=user).first()
+                print(update.id)
                 flash("CRY")
                 update.name = ustomer
                 update.active = True
@@ -68,21 +70,52 @@ def cart():
         print ("cart")
 # put in the user id instead of username.
         user = session["Current_Customer"]
+        name = customer.query.filter_by(name=user).first()
 
+        user_id = name.id
+        print (user_id)
+        print ("user id")
         id = request.form.get("pizzaid")
         print (id)
+        price = request.form.get("pizzaprice")
 
         pizz = c_order()
         pizz.pizza_id = id
-        pizz.customer_id = user
+        pizz.customer_id = user_id
+        pizz.pizza_price = price
+
         db.session.add(pizz)
+        db.session.commit()
 
         results = pizza.query.all()
+        flash("um, this works")
         print (results)
         return render_template("menu.html", results = results)
 
 
+@app.route('/checkout', methods=["Post"])
+def checkout():
+    if request.method == "POST":
+        print("checkout")
+        user = session["Current_Customer"]
+        name = customer.query.filter_by(name=user).first()
+        user_id = name.id
+        print (user_id)
 
+        check = c_order.query.filter_by(customer_id=user_id).all()
+        if check == None:
+            flash("you have nothing in your cart")
+            return render_template("fail.html")
+
+        else:
+            total = 0
+            for item in check:
+                total += item.pizza_price
+            print(total)
+
+            return render_template("checkout.html", total = total)
+            
+        return render_template("fail.html")
 
 
 @app.route('/admin', methods=["GET","Post"])
@@ -107,17 +140,17 @@ def logout():
     Current_Customer = session["Current_Customer"] 
     print (Current_Customer)
     print ("current customer")
-
-    update = customer.query.filter_by(name=Current_Customer).first()
-
-    update.active = False
-    update.pizza_id = None
-
-    db.session.commit()
-
     session.pop('Current_Customer', None)
 
-    results = customer.query.filter_by(name=user).first()    
-    print(results)
-    return redirect(url_for('home'))
+    update = customer.query.filter_by(name=Current_Customer).first()
+    user_id = update.id
+    update.active = False
+    
+    db.session.commit()
+    check = c_order.query.filter_by(customer_id=user_id).delete()
+    db.session.commit()
+
+    flash("asasad")
+    return render_template("fail.html")
+        
 

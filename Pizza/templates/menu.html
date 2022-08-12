@@ -12,8 +12,14 @@ Pizza menu
         <p>{{ pizza.price }}</p>
         <form action="/cart" method="post" required>
             <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
+            <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
             <input type="submit" value="cart" required>
+        </form>
     </div>
- 
+    
+    
     {% endfor %}
+    <form action="/checkout" method="post" required>
+        <input type="submit" value="checkout" required>
+    </form>
 {% endblock %}
