@@ -5,20 +5,27 @@ Pizza menu
 {% endblock %}
 
 {% block body %}
+
 <h1>Pick your pizza here!!!</h1>
-    {% for pizza in results %}
-    <div class="box">
-        <p>{{ pizza.name }}</p>
-        <p>{{ pizza.price }}</p>
-        <form action="/cart" method="post" required>
-            <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
-            <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
-            <input type="submit" value="cart" required>
-        </form>
-    </div>
-    
+        {% for pizza in results %}
+        <div class="container">
+            <div class="box">
+                <img src="/static/{{pizza.path}}"></img>
+                <p>{{ pizza.name }}</p>
+                <p>{{ pizza.price }}</p>
+                <form action="/cart" method="post" required>
+                    <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
+                    <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
+                    <input type="submit" value="cart" required>
+                </form>
+            </div>
+        </div>
+</div>
     
     {% endfor %}
+    <br></br>
+    <br></br>
+    <br></br>
     <form action="/checkout" method="post" required>
         <input type="submit" value="checkout" required>
     </form>

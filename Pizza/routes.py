@@ -28,14 +28,14 @@ def user():  #this should work as both a login and register
                 ustomer = request.form['username']
                 update = customer.query.filter_by(name=user).first()
                 print(update.id)
-                flash("CRY")
+                print("user id")
                 update.name = ustomer
                 update.active = True
 
                 db.session.commit()
-                results = customer.query.all()
+                results = pizza.query.all()
 
-                return render_template("logged.html", results = results)
+                return render_template("menu.html", results = results)
         elif name == None:
             new_customer = customer()
             new_customer.name = user
@@ -47,8 +47,8 @@ def user():  #this should work as both a login and register
             print (new_customer)
             db.session.commit()
 
-            results = customer.query.all()
-            return render_template("logged.html", results = results)
+            results = pizza.query.all()
+            return render_template("menu.html", results = results)
         
         else:
             flash("server error occured, please try again later")
@@ -68,7 +68,6 @@ def menu():
 def cart():
     if request.method == "POST":
         print ("cart")
-# put in the user id instead of username.
         user = session["Current_Customer"]
         name = customer.query.filter_by(name=user).first()
 
@@ -88,7 +87,7 @@ def cart():
         db.session.commit()
 
         results = pizza.query.all()
-        flash("um, this works")
+        flash("Added Pizza")
         print (results)
         return render_template("menu.html", results = results)
 
@@ -124,6 +123,7 @@ def admin():
         
         
         return render_template("fail.html")
+
 
 @app.route('/fail')
 def fail():

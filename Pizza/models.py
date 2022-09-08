@@ -10,6 +10,7 @@ class customer(db.Model):
 
 class pizza(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    path = db.Column(db.Text)
     name = db.Column(db.String(25))
     price = db.Column(db.Integer)
     

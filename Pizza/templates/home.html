@@ -6,10 +6,15 @@ Home
 
 {% block body %}
 
-     <h1>hello, make a pizza order here</h1>
-     <h1></h1>
-    <form action="/user" method="post" required>
-        <input placeholder="Enter Username" type="text" name="username" maxlength="25" required >
+     <h1>
+        hello, make a pizza order here</h1>
+
+    <div class="middle">
+        <form action="/user" method="post" required>
+        <input placeholder="Enter Username" type="text" name="username" maxlength="25" required > 
         <input type="submit" value="login">
-    </form>
+        </form>
+        <br></br>
+    </div>
+    
 {% endblock %}
