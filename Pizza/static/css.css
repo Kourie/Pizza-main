@@ -47,33 +47,30 @@ img {
 .container {
     display: flex;
     padding: 10px;
-    align-items: stretch;
-    flex-wrap: wrap;
-    align-content: stretch;
-    gap: 10px 30px;
-    margin: 10px;
-    align-self: baseline;
-}
-
-
-   
-
-.box {
-  
-    border: 1px rgb(255, 255, 255) solid;
-    padding: 2vh;
-    background-color:rgb(216, 236, 205);
-   
-    box-sizing: inherit;
-    max-width: 269px;
-
-    display: flex;
-
     align-items: center;
     flex-wrap: wrap;
+    align-content: flex-end;
     gap: 10px 30px;
     margin: 10px;
     align-self: baseline;
+    flex-direction: row;
+    justify-content: space-around;
+}
+  
+
+.box {
+    border: 1px rgb(255, 255, 255) solid;
+    padding: 2vh;
+    background-color: rgb(216, 236, 205);
+    box-sizing: inherit;
+    max-width: 269px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 10px;
+
+    align-content: flex-end;
+    flex-direction: column;
 }
 
 

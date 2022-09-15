@@ -3,8 +3,8 @@ from sqlalchemy.sql import func
 
 class customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25))
-    active = db.Column(db.Boolean, nullable=True)
+    username = db.Column(db.String(25))
+    password = db.Column(db.String, nullable=True)
     def __repr__(self):
         return self.name
 
@@ -19,4 +19,4 @@ class c_order(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"))
     pizza_id = db.Column(db.Integer, db.ForeignKey("pizza.id"))
     pizza_price = db.Column(db.Integer, db.ForeignKey("pizza.price"))
-
+    pizza_name = db.Column(db.String)

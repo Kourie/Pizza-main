@@ -7,8 +7,8 @@ Pizza menu
 {% block body %}
 
 <h1>Pick your pizza here!!!</h1>
+<div class="container">
         {% for pizza in results %}
-        <div class="container">
             <div class="box">
                 <img src="/static/{{pizza.path}}"></img>
                 <p>{{ pizza.name }}</p>
@@ -16,17 +16,33 @@ Pizza menu
                 <form action="/cart" method="post" required>
                     <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
                     <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
+                    <input type="hidden" name="pizzaname" value="{{ pizza.name }}">
+                    
                     <input type="submit" value="cart" required>
                 </form>
             </div>
-        </div>
+        {% endfor %}
 </div>
     
-    {% endfor %}
     <br></br>
-    <br></br>
-    <br></br>
+
+
     <form action="/checkout" method="post" required>
         <input type="submit" value="checkout" required>
     </form>
+
+    <table>
+        <thead>
+           <tr>
+            {% for item in check %}
+            <p></p>
+            
+        </tr>
+    </thead>
+    {% endfor %}
+    <th>{{ total }}</th>
+    
+        <tbody>
+        </table>
+
 {% endblock %}

@@ -20,11 +20,15 @@ yay
 <table>
     <thead>
        <tr>
-          <th>{{ total }}</th>
-
-       </tr>
+          {% for item in check %}
+            <th>{{ item.pizza_name }}</th>
+            
+            {% endfor %} 
+         </tr>
+         <th>{{ total }}</th>
     </thead>
 
     <tbody>
+    </table>
 
 {% endblock %}
