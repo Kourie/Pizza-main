@@ -1,7 +1,7 @@
 from Pizza import app, db
 from Pizza.models import pizza, customer, c_order
 from flask import Flask, render_template, request, flash, session, redirect, g
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/', methods=["GET","Post"])
@@ -18,39 +18,47 @@ def user():  #this should work as both a login and register
         encrypted = generate_password_hash(password)  
         print (encrypted)  
 
-
-        on = True #when the user is tagging the name, we make the user inactive.
         name = customer.query.filter_by(username=user).first()
         
         if name:
 
             #if username is in database
             print("shit")
-            print (name.username)
-            print (name.id)
+            if name.username == user:
+                check_password_hash(encrypted, password)
 
-            # if name.active == True:
-            #     flash ("use a diffrent username, this one is being used")
-            #     print("sssss")
-            #     return render_template("home.html")
-            # else:
-            #     flash ("username confirmed, coining name. logged in correctly, ")
-            #     session["Current_Customer"] = user
-            #     ustomer = request.form['username']
-            #     update = customer.query.filter_by(name=user).first()
-            #     print(update.id)
-            #     print("user id")
-            #     update.name = ustomer
-            #     update.active = True
 
-            #     db.session.commit()
-            #     results = pizza.query.all()
+                if check_password_hash(name.password, password) == True:
+                    flash("yay")
+                    print (name.password)
+                    print(encrypted)
+                    session["Current_Customer"] = user
+                    user_id = name.id
+                    check = c_order.query.filter_by(customer_id=user_id).all()
+                    results = pizza.query.all()
+                    if check == None:
+                         flash("you have nothing in your cart")
+                    
+                    else:
 
-                # return render_template("menu.html", results = results)
+                        total = 0
+                        for item in check:
+                            total += item.pizza_price
+                        print(total)
+                    
+                    
+                    return render_template("menu.html", results = results, total = total, check = check )
+
+
+                else:
+                    flash("nay, wrong username or password")
+
+                    return render_template("fail.html")
+                
         elif name == None:
             print("new user")
             new_customer = customer()
-            new_customer.name = user
+            new_customer.username = user
             new_customer.password = encrypted
 
             session["Current_Customer"] = user
@@ -59,6 +67,9 @@ def user():  #this should work as both a login and register
             db.session.commit()
 
             results = pizza.query.all()
+            
+            name = customer.query.filter_by(username=user).first()
+            user_id = name.id
 
             check = c_order.query.filter_by(customer_id=user_id).all()
             if check == None:
@@ -69,7 +80,7 @@ def user():  #this should work as both a login and register
                 total = 0
                 for item in check:
                     total += item.pizza_price
-                Print(total)
+                print(total)
             return render_template("menu.html", results = results, total = total, check = check )
         
         else:
@@ -91,7 +102,7 @@ def cart():
     if request.method == "POST":
         print ("cart")
         user = session["Current_Customer"]
-        name = customer.query.filter_by(name=user).first()
+        name = customer.query.filter_by(username=user).first()
 
         user_id = name.id
         print (user_id)
@@ -132,7 +143,7 @@ def checkout():
     if request.method == "POST":
         print("checkout")
         user = session["Current_Customer"]
-        name = customer.query.filter_by(name=user).first()
+        name = customer.query.filter_by(username=user).first()
         user_id = name.id
         print (user_id)
 
@@ -172,17 +183,20 @@ def fail():
 def logout():
     # remove the username from the session if it's there
 
-    Current_Customer = session["Current_Customer"] 
-    print (Current_Customer)
+    username = session["Current_Customer"] 
+    print (username)
     print ("current customer")
     session.pop('Current_Customer', None)
-
-    update = customer.query.filter_by(name=Current_Customer).first()
-    user_id = update.id
-    update.active = False
+    name = customer.query.filter_by(username=username).first()
+    user_id = name.id
+    print(user_id)
     
-    db.session.commit()
-    check = c_order.query.filter_by(customer_id=user_id).delete()
+    check = c_order.query.filter_by(customer_id=user_id).all()
+    for item in check:
+        print(item.pizza_name)
+
+    pizz = c_order.query.filter_by(customer_id=user_id).delete()
+
     db.session.commit()
 
     flash("asasad")
