@@ -5,10 +5,23 @@ yay
 {% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <h1>hi</h1>
 
-<div id = "wrapper" style="position: relative; top: 40px;">
+      <table>
+         <thead>
+            <tr>
+               {% for item in check %}
+               <th>{{ item.pizza_name }}</th>
+               
+               {% endfor %} 
+            </tr>
+            <th>{{ total }}</th>
+         </thead>
+         
+         <tbody>
+         </table>
+      </form>
    <header>
        <div class="button">
          <a title="Log Out" href="logout">Log Out</a>
@@ -16,19 +29,5 @@ yay
    </header>
 
 
-</form>
-<table>
-    <thead>
-       <tr>
-          {% for item in check %}
-            <th>{{ item.pizza_name }}</th>
-            
-            {% endfor %} 
-         </tr>
-         <th>{{ total }}</th>
-    </thead>
-
-    <tbody>
-    </table>
-
+      
 {% endblock %}
