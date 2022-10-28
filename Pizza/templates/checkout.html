@@ -1,33 +1,34 @@
 {% extends "trueHome.html" %}
 
 {% block title %}
-yay
+Checkout
 {% endblock %}
 
 {% block body %}
 
-<h1>hi</h1>
+<h1>Cart</h1>
 
-      <table>
-         <thead>
-            <tr>
-               {% for item in check %}
-               <th>{{ item.pizza_name }}</th>
-               
-               {% endfor %} 
-            </tr>
-            <th>{{ total }}</th>
-         </thead>
-         
-         <tbody>
-         </table>
-      </form>
-   <header>
-       <div class="button">
-         <a title="Log Out" href="logout">Log Out</a>
-       </button>
-   </header>
+<table>
+   <tr>
+      <th><h2>Pizzas</th></h2>
+      <th>price</th>
+   </tr>
+   {% for item in check %}
+   <tr>
+      <th> {{item.pizza_name}}</th>
+      <th> {{item.pizza_price}}$ </th>
+   </tr>
+   {% endfor %}
+</table>
 
+<h3>{{ total }}$  NZD</h3>
 
-      
+<div class= "middle">
+   <div class="button b">
+      <a title="orderplaced" href="orderplaced">Place your order!</a>
+   </div>
+</div>
+   <br></br>
+<p></p>  
+
 {% endblock %}

@@ -1,77 +1,218 @@
-html{
-    background-color: #ffeeee;
-    max-width: 95%;
-    font-family: Verdana,sans-serif;
-    
+html {
+  background-color: #ffeeee;
+  max-width: 95%;
+  font-family: Verdana, sans-serif;
+
 }
 
-h1{
+
+h2 {
+
+  text-align: left;
+}
+
+h3{
+  text-align: right;
+  font-size: 24px;
+}
+
+h4{
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  align-items: center;
+}
+
+th {
+  text-align: left;
+  width: 93%;
+  color: rgb(69, 69, 69);
+  opacity: 68%;
+}
+
+h1 {
+  text-align: center;
+  font-size: 5vh;
+
+}
+
+div.middle {
+  text-align: center;
+}
+
+body {
+  /* border: 1px solid black; */
+  box-shadow: 1vh 1vh 6vh 1vh #aaaaaa;
+  border-radius: 25px;
+  margin-top: 56px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 69%;
+  padding-right: 10px;
+  padding-top: 1px;
+  padding-left: 10px;
+  background-color: #ffffff;
+
+}
+
+/* 
+.button {
+    background-color: #4CAF50; 
+    border: none;
+    color: white;
+    padding: 16px 32px;
     text-align: center;
-    font-size: 5vh;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+ */
+.forma{
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 5px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
 
 }
-div.middle{
-    text-align: center;
+
+.forma:hover {
+  background-color: rgb(127, 223, 157);
+  color: rgb(255, 255, 255);
 }
 
-body{
-    /* border: 1px solid black; */
-    box-shadow: 1vh 1vh 6vh 1vh #aaaaaa;
-    border-radius: 25px;    
-    margin-top: 56px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 69%;
-    padding-right: 10px;
-    padding-top: 1px;
-    padding-left:  10px;
-    background-color: #ffffff;
+
+li{
+  text-align: center;
+  list-style: none;
+}
+
+.button {
+  border-radius: 8px;
+  transition-duration: 0.4s;
 
 }
+
+.button b {
+  border-radius: 8px;
+  transition-duration: 0.4s;
+  float: center;
+
+}
+
+
+.button b {
+
+  color: black;
+  text-align: center;
+  padding-top: 9px;
+  padding: 3px 20px;
+  text-decoration: none;
+  font-size: 22px;
+  transition-duration: 0.4s;
+  background-color: #ffffff;
+
+  border: 2px solid red;
+}
+
+.button b:hover {
+  background-color: red;
+  color: rgb(255, 255, 255);
+}
+
+.button a {
+  float: center;
+  color: black;
+  text-align: center;
+  padding-top: 9px;
+  padding: 3px 20px;
+  text-decoration: none;
+  font-size: 22px;
+  transition-duration: 0.4s;
+  background-color: #ffffff;
+
+  border: 2px solid red;
+
+}
+
+.button a:hover {
+  background-color: red;
+  color: rgb(255, 255, 255);
+}
+
 
 img {
-    max-width:250px;
-    max-height:250px;
-  }
+  max-width: 250px;
+  max-height: 168px;
+}
 
 
 
 
-.wrapper{
-	margin:0 auto;
-	max-width:85%;
-    background-color: aqua;
+.wrapper {
+  margin: 0 auto;
+  max-width: 85%;
+  background-color: aqua;
 
 
 }
 
 .container {
-    display: flex;
-    padding: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    align-content: flex-end;
-    gap: 10px 30px;
-    margin: 10px;
-    align-self: baseline;
-    flex-direction: row;
-    justify-content: space-around;  
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 10px 30px;
+  margin: 10px;
+  align-self: baseline;
+  flex-direction: row;
+  justify-content: space-around;
 }
-  
+
 
 .box {
-    border: 1px rgb(255, 255, 255) solid;
-    padding: 2vh;
-    background-color: rgb(216, 236, 205);
-    box-sizing: inherit;
-    max-width: 269px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 10px;
+  border: 1px rgb(255, 255, 255) solid;
+  padding: 2vh;
+  background-color: rgb(216, 236, 205);
+  box-sizing: inherit;
+  max-width: 269px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px;
 
-    align-content: flex-end;
-    flex-direction: column;
+  align-content: flex-end;
+  flex-direction: column;
+}
+/* 
+input{
+  float: center;
+  color: black;
+  text-align: center;
+  padding-top: 9px;
+  padding: 3px 20px;
+  text-decoration: none;
+  font-size: 22px;
+  transition-duration: 0.4s;
+  background-color: #ffffff;
+
+  border: 2px solid red;
 }
 
-
+input:hover{
+  background-color: red;
+  color: rgb(255, 255, 255);
+} */

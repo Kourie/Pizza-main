@@ -6,43 +6,60 @@ Pizza menu
 
 {% block body %}
 
+<!--  -->
+<h1>your order </h1>
+<table>
+    <tr>
+        <th><h2>Pizzas </h2></th>
+        <th>Price</th>
+    </tr>
+    {% for item in check %}
+    <tr>
+        <th> {{item.pizza_name}}</th>
+        <th> +{{item.pizza_price}}$ </th>
+    </tr>
+    {% endfor %}
+</table>
+<p></p>
+<h3>{{ total }}$ NZD</h3>
+<div class="container">
+
+
+
+<form action="/checkout" method="post">
+    <input type="submit" value="Go to Checkout" name="checkout" required>
+</form>
+
+<form action="/clear" method="post" required>
+    <input type="submit" value="Clear your selection" name="clear" required>
+</form>
+</div>
+</div>
+
 <h1>Pick your pizza here!!!</h1>
 <div class="container">
-        {% for pizza in results %}
-            <div class="box">
-                <img src="/static/{{pizza.path}}"></img>
-                <p>{{ pizza.name }}</p>
-                <p>{{ pizza.price }}</p>
-                <form action="/cart" method="post" required>
-                    <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
-                    <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
-                    <input type="hidden" name="pizzaname" value="{{ pizza.name }}">
-                    
-                    <input type="submit" value="cart" required>
-                </form>
-            </div>
-        {% endfor %}
-</div>
-    
-    <br></br>
+    {% for pizza in results %}
+    <div class="box">
+        <img src="/static/{{pizza.path}}"></img>
+        <p>{{ pizza.name }}</p>
+        <p>{{ pizza.price }}$</p>
+        <form action="/cart" method="post" required>
+            <input type="hidden" name="pizzaid" value="{{ pizza.id }}">
+            <input type="hidden" name="pizzaprice" value="{{ pizza.price }}">
+            <input type="hidden" name="pizzaname" value="{{ pizza.name }}">
 
-
-    <form action="/checkout" method="post" required>
-        <input type="submit" value="checkout" required>
-    </form>
-
-    <table>
-        <thead>
-           <tr>
-            {% for item in check %}
-            <p></p>
-            
-        </tr>
-    </thead>
+            <input type="submit" value="cart" required>
+        </form>
+    </div>
     {% endfor %}
-    <th>{{ total }}</th>
-    
-        <tbody>
-        </table>
+</div>
+
+<br></br>
+
+
+<!-- <form action="/checkout" method="post">Clear your selection?
+    <input type="submit" value="clear"> <input type="submit" value="checkout" required>
+</form> -->
+
 
 {% endblock %}
