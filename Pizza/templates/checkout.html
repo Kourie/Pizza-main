@@ -16,15 +16,24 @@ Checkout
    {% for item in check %}
    <tr>
       <th> {{item.pizza_name}}</th>
-      <th> {{item.pizza_price}}$ </th>
+      <th> ${{item.pizza_price}} </th>
    </tr>
    {% endfor %}
 </table>
 
-<h3>{{ total }}$  NZD</h3>
+<h3>${{ total }}  NZD</h3>
+
 
 <div class= "middle">
-   <div class="button b">
+   <div class="button">
+      <a title="menu" href="menu">Go back</a>
+   </div>
+</div>
+
+<br> </br>
+
+<div class= "middle">
+   <div class="button">
       <a title="orderplaced" href="orderplaced">Place your order!</a>
    </div>
 </div>

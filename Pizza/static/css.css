@@ -105,16 +105,15 @@ li{
 
 }
 
-.button b {
+.buttonb {
   border-radius: 8px;
   transition-duration: 0.4s;
-  float: center;
 
 }
 
 
-.button b {
-
+.buttonb {
+  float: center;
   color: black;
   text-align: center;
   padding-top: 9px;
@@ -127,7 +126,7 @@ li{
   border: 2px solid red;
 }
 
-.button b:hover {
+.buttonb:hover {
   background-color: red;
   color: rgb(255, 255, 255);
 }

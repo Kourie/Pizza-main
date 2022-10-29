@@ -16,12 +16,12 @@ Pizza menu
     {% for item in check %}
     <tr>
         <th> {{item.pizza_name}}</th>
-        <th> +{{item.pizza_price}}$ </th>
+        <th> +${{item.pizza_price}} </th>
     </tr>
     {% endfor %}
 </table>
 <p></p>
-<h3>{{ total }}$ NZD</h3>
+<h3>${{ total }} NZD</h3>
 <div class="container">
 
 

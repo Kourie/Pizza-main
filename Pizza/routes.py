@@ -108,7 +108,23 @@ def clear():
         return render_template("menu.html", results = results, total = total)
 
 
+@app.route('/menu', methods=["GET", "Post"])
+def menu():
+    
+    results = pizza.query.all()
+    user_id = session["Customer_ID"] 
+    check = c_order.query.filter_by(customer_id=user_id).all()
+    if check == None:
+        flash("you have nothing in your cart")
+    else:
 
+        ttotal = 0
+        for item in check:
+            ttotal += item.pizza_price
+        total = round(ttotal, 2)
+        print(total)
+    
+    return render_template("menu.html", results = results, total = total, check = check)
 
 
 @app.route('/cart', methods=["GET", "Post"])
