@@ -110,52 +110,9 @@ def clear():
 
 @app.route('/menu', methods=["GET", "Post"])
 def menu():
-    
     results = pizza.query.all()
-    user_id = session["Customer_ID"] 
-    check = c_order.query.filter_by(customer_id=user_id).all()
-    if check == None:
-        flash("you have nothing in your cart")
-    else:
-
-        ttotal = 0
-        for item in check:
-            ttotal += item.pizza_price
-        total = round(ttotal, 2)
-        print(total)
-    
-    return render_template("menu.html", results = results, total = total, check = check)
-
-
-@app.route('/cart', methods=["GET", "Post"])
-def cart():
-    if request.method == "POST":
-        print ("cart")
-        user = session["Current_Customer"]
+    if "Customer_ID" in session:
         user_id = session["Customer_ID"] 
-        print(user_id)
-        print ("user id")
-        id = request.form.get("pizzaid")
-        price = request.form.get("pizzaprice")
-        pname = request.form.get("pizzaname")
-        print (id)
-
-        # here's a fun little thing, I made hidden tags/names to be inputted by the user when they pick a Pizza, it's really cool
-        # Wonder where I learnt it from.
-
-        pizz = c_order()
-        pizz.pizza_id = id
-        pizz.customer_id = user_id
-        pizz.pizza_price = price
-        pizz.pizza_name = pname
-        # and here we add the Pizza, carefully named pizz since I didn't want to call it Pizza, in fear it might break since it would have the same name as the module
-        db.session.add(pizz)
-        db.session.commit()
-
-        results = pizza.query.all()
-        flash("Added " + pname) #just a little user feedback
-        print (results)
-
         check = c_order.query.filter_by(customer_id=user_id).all()
         if check == None:
             flash("you have nothing in your cart")
@@ -166,44 +123,103 @@ def cart():
                 ttotal += item.pizza_price
             total = round(ttotal, 2)
             print(total)
+            return render_template("menu.html", results = results, total = total, check = check)
+    else:
+        flash("you must be logged in!")
+        print("hentai")        
+        return render_template ("fail.html")
+     
 
-        return render_template("menu.html", results = results, total = total, check = check)
 
+@app.route('/cart', methods=["GET", "Post"])
+def cart():
+    if request.method == "POST":
+        if "Customer_ID" in session:
+            print ("cart")
+            user = session["Current_Customer"]
+            user_id = session["Customer_ID"] 
+            if user_id == None:
+                flash("you must be logged in!")
+                return render_template ("fail.html")    
+            print(user_id)
+            print ("user id")
+            id = request.form.get("pizzaid")
+            price = request.form.get("pizzaprice")
+            pname = request.form.get("pizzaname")
+            print (id)
+
+            # here's a fun little thing, I made hidden tags/names to be inputted by the user when they pick a Pizza, it's really cool
+            # Wonder where I learnt it from.
+
+            pizz = c_order()
+            pizz.pizza_id = id
+            pizz.customer_id = user_id
+            pizz.pizza_price = price
+            pizz.pizza_name = pname
+            # and here we add the Pizza, carefully named pizz since I didn't want to call it Pizza, in fear it might break since it would have the same name as the module
+            db.session.add(pizz)
+            db.session.commit()
+
+            results = pizza.query.all()
+            flash("Added " + pname) #just a little user feedback
+            print (results)
+
+            check = c_order.query.filter_by(customer_id=user_id).all()
+            if check == None:
+                flash("you have nothing in your cart")
+            else:
+
+                ttotal = 0
+                for item in check:
+                    ttotal += item.pizza_price
+                total = round(ttotal, 2)
+                print(total)
+                return render_template("menu.html", results = results, total = total, check = check)
+
+        else:
+            flash("you must be logged in!")
+            print("hentai")        
+            return render_template ("fail.html")
+
+
+        
 
 @app.route('/checkout', methods=["Post"])
 def checkout():
     if request.method == "POST":
         # over here, if you check the menu, clear and checkout are in the same form, but inputting diffrent textlines
         # this is because I wanted for them to be beside each other, so it looks neater. =)
-
-        if request.form.get("clear") == ("clear"):
-            # so if the request form is clear, go to the redirect function
-            print (request.form.get("clear"))
-            return redirect("/clear")
-        else:    
-            # if not, then it must be the checkout button!!!
-            print(request.form.get("checkout"))
-            print("crapapidadfweofwifwfb") #I know, right?
-            user = session["Current_Customer"]
-            user_id = session["Customer_ID"] 
-            print(user_id)
-            
-            check = c_order.query.filter_by(customer_id=user_id).all()
-            print ("REEEEEEEEEEEEEEEEEEEEEEEEE") #bro, Dat's Crazyyy!!!
-            if check == None:
-                flash("you have nothing in your cart") #now put something in!
-                return render_template("fail.html")
-
-            else:
-                ttotal = 0
-                for item in check:
-                    ttotal += item.pizza_price
-                total = round(ttotal, 2)
-                print(total)
-
-
-                return render_template("checkout.html", total = total, check = check)
+        if "Customer_ID" in session:
+            if request.form.get("clear") == ("clear"):
+                # so if the request form is clear, go to the redirect function
+                print (request.form.get("clear"))
+                return redirect("/clear")
+            else:    
+                # if not, then it must be the checkout button!!!
+                print(request.form.get("checkout"))
+                print("crapapidadfweofwifwfb") #I know, right?
+                user = session["Current_Customer"]
+                user_id = session["Customer_ID"] 
+                print(user_id)
                 
+                check = c_order.query.filter_by(customer_id=user_id).all()
+                print ("REEEEEEEEEEEEEEEEEEEEEEEEE") #bro, Dat's Crazyyy!!!
+                if check == None:
+                    flash("you have nothing in your cart") #now put something in!
+                    return render_template("fail.html")
+
+                else:
+                    ttotal = 0
+                    for item in check:
+                        ttotal += item.pizza_price
+                    total = round(ttotal, 2)
+                    print(total)
+
+
+                    return render_template("checkout.html", total = total, check = check)
+        else:
+            flash("Error: why are you not logged in?")
+
         return render_template("fail.html")
 
 
@@ -224,21 +240,26 @@ def fail():
 
 @app.route('/orderplaced')
 def orderplaced():
-    username = session["Current_Customer"] 
-    print (username)
-    print ("current customer")
-    user_id = session["Customer_ID"] 
-    print(user_id)
-            
-    check = c_order.query.filter_by(customer_id=user_id).all()
-    for item in check:
-        print(item.pizza_name)
+    if "Customer_ID" in session:
+        username = session["Current_Customer"] 
+        print (username)
+        print ("current customer")
+        user_id = session["Customer_ID"] 
+        print(user_id)
+                
+        check = c_order.query.filter_by(customer_id=user_id).all()
+        for item in check:
+            print(item.pizza_name)
 
-    pizz = c_order.query.filter_by(customer_id=user_id).delete()
-    
-    # and laslty, pop the customer ID
-    db.session.commit()
-    return render_template("orderplaced.html")
+        pizz = c_order.query.filter_by(customer_id=user_id).delete()
+        
+        # and laslty, pop the customer ID
+        db.session.commit()
+        return render_template("orderplaced.html")
+    else:
+        flash("you must be logged in!")
+        print("hentai")        
+        return render_template ("fail.html")
 
 
 
