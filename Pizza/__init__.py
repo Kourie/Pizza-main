@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from os import path
@@ -13,10 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
 db = SQLAlchemy(app)
 
-#always refrence the file with capital P. this is done since moudles has a lowercase p
-from Pizza import models
+# always refrence the file with capital P. this is done since moudles has a lowercase p
 from Pizza import routes
-#Pizza is the filename that we're in
-
-
-    
+from Pizza import models
+# Pizza is the filename that we're in

@@ -11,12 +11,12 @@ h2 {
   text-align: left;
 }
 
-h3{
+h3 {
   text-align: right;
   font-size: 24px;
 }
 
-h4{
+h4 {
   text-align: center;
 }
 
@@ -72,7 +72,7 @@ body {
     cursor: pointer;
   }
  */
-.forma{
+.forma {
   background-color: #4CAF50;
   border: none;
   border-radius: 5px;
@@ -94,7 +94,7 @@ body {
 }
 
 
-li{
+li {
   text-align: center;
   list-style: none;
 }
@@ -196,6 +196,7 @@ img {
   align-content: flex-end;
   flex-direction: column;
 }
+
 /* 
 input{
   float: center;

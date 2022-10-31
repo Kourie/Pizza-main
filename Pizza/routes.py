@@ -1,91 +1,85 @@
 # oooo, look, imports
-from Pizza import app, db    
-from Pizza.models import pizza, customer, c_order  #databases
+from Pizza import app, db
+from Pizza.models import pizza, customer, c_order  # databases
 from flask import Flask, render_template, request, flash, session, redirect, g
-from werkzeug.security import generate_password_hash, check_password_hash  #this is the hashing and stuff imports
+# this is the hashing and stuff imports
+from werkzeug.security import generate_password_hash, check_password_hash
 
-@app.route('/', methods=["GET","Post"])
+
+@app.route('/', methods=["GET", "Post"])
 def home():
 
     return render_template("home.html")
 
-#ah yes, the s#### login system of mine
+# ah yes, the s#### login system of mine
 
-@app.route('/user', methods=["GET","Post"])
-def user():  #this should work as both a login and register
+
+@app.route('/user', methods=["GET", "Post"])
+def user():  # this should work as both a login and register
     if request.method == "POST":
         user = request.form.get('username')
         password = request.form.get('password')
-        encrypted = generate_password_hash(password)  
-        # print (encrypted)  
-        # that print statment is debug
+        encrypted = generate_password_hash(password)
+
         name = customer.query.filter_by(username=user).first()
-        
+
         if name:
             check_password_hash(encrypted, password)
 
             if check_password_hash(name.password, password) == True:
-                print (name.password)
-                print(encrypted)
-                # I wonder if I should remove these print statments? they were here to verify that both items are encrypted
                 session["Current_Customer"] = user
                 user_id = name.id
                 session["Customer_ID"] = name.id
-                print (session["Customer_ID"])
                 check = c_order.query.filter_by(customer_id=user_id).all()
                 results = pizza.query.all()
                 if check == None:
-                        flash("you have nothing in your cart")
-                
+                    flash("you have nothing in your cart")
+
                 else:
                     # over here is a small loop for the stuff in the user's cart, since if they are reaccruing and didn't place an order, they might still have something inside of it
                     ttotal = 0
                     for item in check:
                         ttotal += item.pizza_price
                     total = round(ttotal, 2)
-                    print(total)
-                
-                
-                return render_template("menu.html", results = results, total = total, check = check )
+            
 
+                return render_template("menu.html", results=results, total=total, check=check)
 
             else:
                 flash("error: wrong username or password")
-                # this means that the user inputed the wrong username or password, 
-                # if password and user was true, it would pass above, but it would fail upon the password checker, dumping the user here 
+                # this means that the user inputed the wrong username or password,
+                # if password and user was true, it would pass above, but it would fail upon the password checker, dumping the user here
                 return render_template("fail.html")
-                
+
         elif name == None:
-            print("new user") #registering user, beep boop baap
-            new_customer = customer() #we make a new class for the user
+            # registering user, beep boop baap
+            new_customer = customer()  # we make a new class for the user
             new_customer.username = user
             new_customer.password = encrypted
 
             session["Current_Customer"] = user
-            print(user)
-            db.session.add(new_customer) #and add the user
+            db.session.add(new_customer)  # and add the user
             db.session.commit()
 
-            results = pizza.query.all() #get all results for the menu (get used to this)
-            
+            results = pizza.query.all()  # get all results for the menu (get used to this)
+
             name = customer.query.filter_by(username=user).first()
             user_id = name.id
             session["Customer_ID"] = name.id
-            print (session["Customer_ID"])
 
             check = c_order.query.filter_by(customer_id=user_id).all()
             if check == None:
                 flash("you have nothing in your cart")
-            
+
             else:
-                
+
                 ttotal = 0
                 for item in check:
                     ttotal += item.pizza_price
-                total = round(ttotal, 2) #oh, and the fun rounding thing
-                print(total)
-            return render_template("menu.html", results = results, total = total, check = check )
-        
+                total = round(ttotal, 2)  # oh, and the fun rounding thing
+
+            return render_template("menu.html", results=results, total=total, check=check)
+
         else:
             flash("server error occured, please try again later")
 
@@ -94,25 +88,20 @@ def user():  #this should work as both a login and register
 def clear():
     if request.method == "POST":
         # if the user has made a mistake, they can clear they're order
-        print("clear")
         user = session["Current_Customer"]
-        print (user)
-        user_id = session["Customer_ID"] 
-        print(user_id)
-        print ("clearinnginignig")
-
+        user_id = session["Customer_ID"]
         pizz = c_order.query.filter_by(customer_id=user_id).delete()
         db.session.commit()
         results = pizza.query.all()
         total = ("0")
-        return render_template("menu.html", results = results, total = total)
+        return render_template("menu.html", results=results, total=total)
 
 
 @app.route('/menu', methods=["GET", "Post"])
 def menu():
     results = pizza.query.all()
     if "Customer_ID" in session:
-        user_id = session["Customer_ID"] 
+        user_id = session["Customer_ID"]
         check = c_order.query.filter_by(customer_id=user_id).all()
         if check == None:
             flash("you have nothing in your cart")
@@ -122,31 +111,21 @@ def menu():
             for item in check:
                 ttotal += item.pizza_price
             total = round(ttotal, 2)
-            print(total)
-            return render_template("menu.html", results = results, total = total, check = check)
+            return render_template("menu.html", results=results, total=total, check=check)
     else:
         flash("you must be logged in!")
-        print("hentai")        
-        return render_template ("fail.html")
-     
+        return render_template("fail.html")
 
 
 @app.route('/cart', methods=["GET", "Post"])
 def cart():
     if request.method == "POST":
         if "Customer_ID" in session:
-            print ("cart")
             user = session["Current_Customer"]
-            user_id = session["Customer_ID"] 
-            if user_id == None:
-                flash("you must be logged in!")
-                return render_template ("fail.html")    
-            print(user_id)
-            print ("user id")
+            user_id = session["Customer_ID"]
             id = request.form.get("pizzaid")
             price = request.form.get("pizzaprice")
             pname = request.form.get("pizzaname")
-            print (id)
 
             # here's a fun little thing, I made hidden tags/names to be inputted by the user when they pick a Pizza, it's really cool
             # Wonder where I learnt it from.
@@ -161,8 +140,7 @@ def cart():
             db.session.commit()
 
             results = pizza.query.all()
-            flash("Added " + pname) #just a little user feedback
-            print (results)
+            flash("Added " + pname)  # just a little user feedback
 
             check = c_order.query.filter_by(customer_id=user_id).all()
             if check == None:
@@ -173,16 +151,12 @@ def cart():
                 for item in check:
                     ttotal += item.pizza_price
                 total = round(ttotal, 2)
-                print(total)
-                return render_template("menu.html", results = results, total = total, check = check)
+                return render_template("menu.html", results=results, total=total, check=check)
 
         else:
             flash("you must be logged in!")
-            print("hentai")        
-            return render_template ("fail.html")
+            return render_template("fail.html")
 
-
-        
 
 @app.route('/checkout', methods=["Post"])
 def checkout():
@@ -192,20 +166,16 @@ def checkout():
         if "Customer_ID" in session:
             if request.form.get("clear") == ("clear"):
                 # so if the request form is clear, go to the redirect function
-                print (request.form.get("clear"))
                 return redirect("/clear")
-            else:    
+            else:
                 # if not, then it must be the checkout button!!!
-                print(request.form.get("checkout"))
-                print("crapapidadfweofwifwfb") #I know, right?
                 user = session["Current_Customer"]
-                user_id = session["Customer_ID"] 
-                print(user_id)
-                
+                user_id = session["Customer_ID"]
+
                 check = c_order.query.filter_by(customer_id=user_id).all()
-                print ("REEEEEEEEEEEEEEEEEEEEEEEEE") #bro, Dat's Crazyyy!!!
                 if check == None:
-                    flash("you have nothing in your cart") #now put something in!
+                    # now put something in!
+                    flash("you have nothing in your cart")
                     return render_template("fail.html")
 
                 else:
@@ -213,54 +183,36 @@ def checkout():
                     for item in check:
                         ttotal += item.pizza_price
                     total = round(ttotal, 2)
-                    print(total)
 
-
-                    return render_template("checkout.html", total = total, check = check)
+                    return render_template("checkout.html", total=total, check=check)
         else:
             flash("Error: why are you not logged in?")
 
         return render_template("fail.html")
 
 
-# @app.route('/admin', methods=["GET","Post"])
-# def admin():
-#     if request.method == "POST":
-        
-        
-#         return render_template("fail.html")
-
 
 @app.route('/fail')
 def fail():
-    flash ("how the hell did you get here? ")
+    flash("how the hell did you get here? ")
     return render_template("fail.html")
-
 
 
 @app.route('/orderplaced')
 def orderplaced():
     if "Customer_ID" in session:
-        username = session["Current_Customer"] 
-        print (username)
-        print ("current customer")
-        user_id = session["Customer_ID"] 
-        print(user_id)
-                
-        check = c_order.query.filter_by(customer_id=user_id).all()
-        for item in check:
-            print(item.pizza_name)
+        username = session["Current_Customer"]
+        user_id = session["Customer_ID"]
 
         pizz = c_order.query.filter_by(customer_id=user_id).delete()
-        
+
         # and laslty, pop the customer ID
         db.session.commit()
         return render_template("orderplaced.html")
     else:
         flash("you must be logged in!")
-        print("hentai")        
-        return render_template ("fail.html")
-
+    
+        return render_template("fail.html")
 
 
 @app.route('/logout')
@@ -269,5 +221,4 @@ def logout():
     session.pop('Customer_ID', None)
     # remove the username from the session if it's there
     return redirect("/")
-        #and finally return Home 
-
+    # and finally return Home

@@ -8,29 +8,29 @@ yay
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <h1>hi</h1>
 
-<div id = "wrapper" style="position: relative; top: 40px;">
+<div id="wrapper" style="position: relative; top: 40px;">
    <header>
-       <div class="button">
+      <div class="button">
          <a title="Log Out" href="logout">Log Out</a>
-       </button>
+         </button>
    </header>
 
-<form action="/menu" method="post" required>
-<input type="submit" value="menu" required>
-</form>
-<table>
-    <thead>
-       <tr>
-          <th>Name</th>
-          <th>active</th>
-       </tr>
-    </thead>
+   <form action="/menu" method="post" required>
+      <input type="submit" value="menu" required>
+   </form>
+   <table>
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>active</th>
+         </tr>
+      </thead>
 
-    <tbody>
-       {% for user in results %}
-          <tr>
-             <td>{{ user.name }}</td>
-             <td>{{ user.active }}</td>
-          </tr>
-          {% endfor %}
-{% endblock %}
+      <tbody>
+         {% for user in results %}
+         <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.active }}</td>
+         </tr>
+         {% endfor %}
+         {% endblock %}

@@ -10,7 +10,9 @@ Pizza menu
 <h1>your order </h1>
 <table>
     <tr>
-        <th><h2>Pizzas </h2></th>
+        <th>
+            <h2>Pizzas </h2>
+        </th>
         <th>Price</th>
     </tr>
     {% for item in check %}
@@ -26,13 +28,13 @@ Pizza menu
 
 
 
-<form action="/checkout" method="post">
-    <input type="submit" value="Go to Checkout" name="checkout" required>
-</form>
+    <form action="/checkout" method="post">
+        <input type="submit" value="Go to Checkout" name="checkout" required>
+    </form>
 
-<form action="/clear" method="post" required>
-    <input type="submit" value="Clear your selection" name="clear" required>
-</form>
+    <form action="/clear" method="post" required>
+        <input type="submit" value="Clear your selection" name="clear" required>
+    </form>
 </div>
 </div>
 

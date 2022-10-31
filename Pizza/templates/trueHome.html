@@ -1,34 +1,35 @@
 <!doctype html>
 <html>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="/static/css.css">
-        
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="/static/css.css">
 
 
-    <body>
+
+<body>
 
 
-        {% block body %}
-    
-        {% endblock %}
+  {% block body %}
 
-        {% with messages = get_flashed_messages() %}
+  {% endblock %}
 
-        {% if messages %}
-        
-          <ul class=flashes>
-      
-          {% for message in messages %}
-      
-            <li>{{ message }}</li>
-            <br></br>
-          {% endfor %}
-          </ul>
-      
-        {% endif %}
-      {% endwith %}
-      
-      </body>
+  {% with messages = get_flashed_messages() %}
+
+  {% if messages %}
+
+  <ul class=flashes>
+
+    {% for message in messages %}
+
+    <li>{{ message }}</li>
+    <br></br>
+    {% endfor %}
+  </ul>
+
+  {% endif %}
+  {% endwith %}
+
+</body>
+
 </html>
